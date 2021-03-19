@@ -38,7 +38,7 @@ export default function Print({nftAsset}: any) {
 
   return (
     <div>
-      <h1 style={{padding: 30, fontWeight: "bold", textAlign: "center", margin: "0 auto", fontSize: "60px"}}>Create a New NFTee.</h1>
+      <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "0 auto", fontSize: "60px"}}>Customize Your Print</h1>
       <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
         <label htmlFor="products">Choose an Item:</label>
         <select style={{marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setItem(e.target.value)} name="items" id="items">
