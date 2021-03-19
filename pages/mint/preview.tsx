@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { faChevronRight, faChevronLeft, faRedo} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TokenForm from '../../components/TokenForm';
 
-export default function Preview() {
+export default function Preview({nftAsset}) {
 
   let [linkName, setLinkName] = useState("");
   let [claimType, setClaimType] = useState("");
@@ -30,7 +31,7 @@ export default function Preview() {
         <input id="tokenName"style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => {setLinkName(e.target.value)}} placeholder="Name" />
       </div>
 
-      <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "140px auto 0 auto", fontSize: "40px"}}>
+      <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "50px auto 0 auto", fontSize: "40px"}}>
         Browser Preview
       </h1>
 
@@ -40,7 +41,10 @@ export default function Preview() {
         <FontAwesomeIcon style={{fontSize: "25px", display: "inline-block", margin: "0 75px 0 20px"}} icon={faRedo} />
         <p style={{display: "inline-block", padding: 15,  margin: "0 auto", fontSize: "30px"}}>https://mintprint.io/{linkName}</p>
         <hr/>
+
+        <TokenForm link={linkName} nftAsset={nftAsset} />
       </div>
+
       <input style={{display: "block", margin: "20px auto", fontSize: "30px"}} onClick={() => {generateLink}} type="button" value="Mint & Print"/>
     </div>
   )
