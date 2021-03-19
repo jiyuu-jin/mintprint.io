@@ -14,7 +14,7 @@ export default function Mint() {
 
   return (
     <div>
-      <h1 style={{padding: 30, fontWeight: "400", textAlign: "center", margin: "0 auto", fontSize: "60px"}}>Create a New NFT</h1>
+      <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "0 auto", fontSize: "60px"}}>Create a New NFT</h1>
       <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
         <label htmlFor="tokenType">Choose a Token Type:</label>
         <select style={{marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setTokenType(e.target.value)} name="tokenType" id="tokenType">
