@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 
-export default function Mint() {
+export default function Mint({setNFTAsset}) {
   let [image, setImage]: any = useState();
   let [tokenType, setTokenType]: any = useState();
   let [supply, setSupply] = useState<number>(1);
@@ -13,6 +13,7 @@ export default function Mint() {
       let reader = new FileReader();
       reader.onload = (e) => {
         setImage(e.target.result);
+        setNFTAsset(e.target.result);
       };
       reader.readAsDataURL(event.target.files[0]);
     }
@@ -46,6 +47,7 @@ export default function Mint() {
           <label htmlFor="tokenSupply">Token Supply:</label>
           <input id="tokenSupply" type="number" value={supply} onChange={(e) => setSupply(Number(e.target.value))} style={{width: "75px", marginLeft: "10px", fontSize: "30px"}} />
         </div>
+
         <div style={{display: "block", margin: "20px auto", fontSize: "30px"}}>
           <label htmlFor="tokenDescription">Token Description:</label>
           <textarea id="tokenDescription"style={{ display: "block", margin: "20px 0 0 0", fontSize: "30px", height: 220}} placeholder="Details about the asset." />
