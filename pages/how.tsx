@@ -1,7 +1,7 @@
 export default function How() {
   return (
     <div>
-      <h1 style={{padding: 30, fontWeight: "400", textAlign: "center", margin: "0 auto", fontSize: "60px"}}>How it Works!</h1>
+      <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "0 auto", fontSize: "60px"}}>How it Works!</h1>
       <p style={{fontSize: "25px", textAlign: "center", margin: 0}}>Mintprint.io is a project for creators to mint digital assets (NFTs) and then print real world 
         merchandise that is paired with each NFT.</p>
 
