@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router'
 
-export default function Mint({setNFTAsset}) {
-  let [image, setImage]: any = useState();
-  let [tokenType, setTokenType]: any = useState();
+export default function Mint({nftAsset, setNFTAsset, setNFTName, setNFTDescription, setTokenType}) {
   let [supply, setSupply] = useState<number>(1);
 
   const router = useRouter();
@@ -12,7 +10,6 @@ export default function Mint({setNFTAsset}) {
     if (event.target.files && event.target.files[0]) {
       let reader = new FileReader();
       reader.onload = (e) => {
-        setImage(e.target.result);
         setNFTAsset(e.target.result);
       };
       reader.readAsDataURL(event.target.files[0]);
@@ -27,7 +24,7 @@ export default function Mint({setNFTAsset}) {
     <div>
       <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "0 auto", fontSize: "60px"}}>Create a New NFT</h1>
 
-      <img src={image} style={{border: "1px solid gray", height: 250, minWidth: 250, display: "block", margin: "0 auto"}} />
+      <img src={nftAsset} style={{border: "1px solid gray", height: 250, minWidth: 250, display: "block", margin: "0 auto"}} />
       <input onChange={onImageChange} style={{padding: "20px 20px 20px 80px", display: "block", margin: "0 auto", fontSize: "30px"}} type="file" />
 
       <div style={{margin: "0 auto", maxWidth: "400px"}}>
@@ -40,7 +37,7 @@ export default function Mint({setNFTAsset}) {
 
         <div style={{display: "block", margin: "20px auto", fontSize: "30px"}}>
           <label htmlFor="tokenName">Token Name:</label>
-          <input id="tokenName"style={{ marginLeft: "10px", fontSize: "30px"}} placeholder="Beeple's NFT" />
+          <input id="tokenName"style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setNFTName(e.target.value)} placeholder="Beeple's NFT" />
         </div>
 
         <div style={{display: "block", margin: "20px auto", fontSize: "30px"}}>
@@ -50,7 +47,7 @@ export default function Mint({setNFTAsset}) {
 
         <div style={{display: "block", margin: "20px auto", fontSize: "30px"}}>
           <label htmlFor="tokenDescription">Token Description:</label>
-          <textarea id="tokenDescription"style={{ display: "block", margin: "20px 0 0 0", fontSize: "30px", height: 220}} placeholder="Details about the asset." />
+          <textarea id="tokenDescription"style={{ display: "block", margin: "20px 0 0 0", fontSize: "30px", height: 220}} onChange={(e) => setNFTDescription(e.target.value)} placeholder="Details about the asset." />
         </div>
       </div>
 
