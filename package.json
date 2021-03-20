@@ -13,6 +13,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "axios": "^0.21.1",
     "next": "10.0.9",
+    "pg": "^8.5.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-draggable": "^4.4.3",
