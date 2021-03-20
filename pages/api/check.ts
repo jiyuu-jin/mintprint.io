@@ -4,13 +4,16 @@ const ERC721ABI: any = require('../../public/ArtTokenABI.json');
 
 export default async (req, res) => {
 
-  const { userAddress, tokenAddress, tokenId, networkId } = req.query;
+  const { userAddress, tokenAddress, tokenId, network } = req.query;
 
   const networks = {
-    80001: 'wss://ws-mumbai.matic.today',
+    mainnet: 'wss://main-light.eth.linkpool.io/ws',
+    matic: 'wss://ws-mainnet.matic.network',
+    mumbai: 'wss://ws-mumbai.matic.today',
+    rinkeby: 'wss://rinkeby-light.eth.linkpool.io/ws',
   };
 
-  const web3 = new Web3(networks[networkId || 80001]);
+  const web3 = new Web3(networks[network || 'mumbai']);
 
   const tokenContract = new web3.eth.Contract(ERC721ABI, tokenAddress);
 
