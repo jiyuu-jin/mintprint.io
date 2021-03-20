@@ -7,6 +7,8 @@ export default function App({ Component, pageProps }) {
   const [tokenType, setTokenType]: any = useState();
   const [nftName, setNFTName]: any = useState("");
   const [nftDescription, setNFTDescription]: any = useState("");
+  const [nftAddress, setNFTAddress]: any = useState("");
+  const [nftID, setNFTID]: any = useState("");
   const [w3, setW3]: any = useState();
 
   useEffect(() => {
@@ -31,9 +33,13 @@ export default function App({ Component, pageProps }) {
       setNFTAsset={setNFTAsset}
       setNFTName={setNFTName}
       setNFTDescription={setNFTDescription}
+      setNFTAddress={setNFTAddress}
+      setNFTID={setNFTID}
       nftName={nftName}
       nftDescription={nftDescription}
       nftAsset={nftAsset}
+      nftAddress={nftAddress}
+      nftID={nftID}
       {...pageProps}
     />
   )

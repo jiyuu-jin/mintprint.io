@@ -22,10 +22,17 @@ export default function Landing() {
 
         <div className={styles.grid}>
           <Link href="/mint">
-            <a className={styles.card}>
-              <h3>Mint and Print &rarr;</h3>
-              <p>Click to start minting.</p>
-            </a>
+                <a className={styles.card}>
+                  <h3>Mint &rarr;</h3>
+                  <p>Don't have a token, mint one.</p>
+                </a>
+          </Link>
+
+          <Link href="/print">
+              <a className={styles.card}>
+                <h3>Print &rarr;</h3>
+                <p>Print your token (Zora)!</p>
+              </a>
           </Link>
 
           <Link href="/how">

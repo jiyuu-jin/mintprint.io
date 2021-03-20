@@ -17,7 +17,7 @@ export default function Mint({nftAsset, setNFTAsset, setNFTName, setNFTDescripti
   }
 
   const continueToPrint = () => {
-    router.push("/mint/print");
+    router.push("/print");
   }
 
   return (

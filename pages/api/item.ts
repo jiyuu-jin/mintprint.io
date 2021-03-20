@@ -11,6 +11,11 @@ export default async (req, res) => {
 
   const { item } = req.query;
 
-  const resp = await axios.get(`https://api.printful.com/mockup-generator/templates/${item}`, options)
-  res.status(200).json(resp.data.result.templates)
-}
+  const itemTemplates = await axios.get(`https://api.printful.com/mockup-generator/templates/${item}`, options);
+  const itemPrintFiles = await axios.get(`https://api.printful.com/mockup-generator/printfiles/${item}`, options);
+
+  res.status(200).json({
+    "itemTemplates": itemTemplates.data.result.templates,
+    "itemPrintFiles": itemPrintFiles.data.result
+  });
+};
