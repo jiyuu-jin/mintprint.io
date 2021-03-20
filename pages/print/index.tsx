@@ -26,7 +26,7 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
     "area_height": 0,
     "width": 0,
     "height": 0,
-    "top": 300,
+    "top": 0,
     "left": 0
   });
 
@@ -36,20 +36,21 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
   const viewPreview = async () =>{
     console.log("generating print");
     setPrintView("loading");
+    console.log("Variant ID", itemPrintFiles.variant_printfiles[0].variant_id);
 
     let printScheme = {
-      "variant_ids" : [4012],
+      "variant_ids" : [itemPrintFiles.variant_printfiles[0].variant_id],
       "format": "jpg",
       "files" : [
           {
-              "placement": "front",
+              "placement": Object.keys(itemPrintFiles.available_placements)[0],
               "image_url": "https://ipfs.io/ipfs/QmQP8PxFWkqoSFwzi3RBHyS5tnDct2bnwaA2TzNL4mwbvf",
               "position": {
-                "area_width": 1800, //(itemPrintFiles[0].width),
-                "area_height": 1800, //(itemPrintFiles[0].height),
-                "width": 1800, //(itemPrintFiles[0].width),
-                "height": 1800,// (itemPrintFiles[0].height,
-                "top": 300,
+                "area_width": itemPrintFiles.printfiles[0].width,
+                "area_height": itemPrintFiles.printfiles[0].height,
+                "width": itemPrintFiles.printfiles[0].width,
+                "height": itemPrintFiles.printfiles[0].height,
+                "top": 0,
                 "left": 0
               }
           }
@@ -90,7 +91,7 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
       console.log("Printful Response:", mockupResp.data);
 
       setItemTemplates(mockupResp.data.itemTemplates);
-      setItemPrintFiles(mockupResp.data.itemPrintFiles.printfiles);
+      setItemPrintFiles(mockupResp.data.itemPrintFiles);
       setItemScalingFactor(mockupResp.data.itemTemplates[currentTemplate].template_width / 500);
       setItemTemplate(mockupResp.data.itemTemplates[currentTemplate]);
     })();
@@ -101,7 +102,7 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
       return (
         <div style={{display: "block", margin: "20px auto", maxWidth: "500px"}}>
           <input style={{display: "inline-block", fontSize: "30px", margin: "0 10px 0 0"}} onClick={() => setPrintView("template")} type="button" value="Edit Mockup"/>
-          <input style={{display: "inline-block", fontSize: "30px"}} onClick={() => router.push("/mint/preview")} type="button" value="Create MintPrint"/>
+          <input style={{display: "inline-block", fontSize: "30px"}} onClick={() => router.push("/print/preview")} type="button" value="Create MintPrint"/>
         </div>
       )
     }else{
