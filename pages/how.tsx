@@ -1,8 +1,10 @@
+import Link from 'next/link';
+
 export default function How() {
   return (
     <div>
       <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "0 auto", fontSize: "60px"}}>How it Works!</h1>
-      <p style={{fontSize: "25px", textAlign: "center", margin: "0 auto", maxWidth: "950px",}}>Mintprint.io is a project for creators to mint digital assets (NFTs) and then print real world 
+      <p style={{fontSize: "25px", textAlign: "center", margin: "0 auto", maxWidth: "950px",}}><Link href="/"><a>Mintprint.io</a></Link> is a project for creators to mint digital assets (NFTs) and then print real world 
         merchandise that is paired with each NFT. Creators can use the service as a shop, donation platform, or for free crypto giveaways.</p>
 
       <p style={{fontSize: "25px", textAlign: "center"}}>Each NFT is an ERC721 token deployed to the polygon/matic network.</p>
