@@ -1,15 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { faChevronRight, faChevronLeft, faRedo} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { loadStripe } from "@stripe/stripe-js/pure";
 import TokenForm from '../../components/TokenForm';
+import axios from 'axios';
 
-export default function Preview({nftAsset, nftName, nftDescription, nftPrice}) {
+export default function Preview({ nftAsset, nftName, nftAddress, nftID, nftDescription, nftPrice, printPrice, imageMockup, printCID, item}) {
 
-  let [linkName, setLinkName]: any = useState("");
-  let [claimType, setClaimType]: any = useState("");
+  const [linkName, setLinkName]: any = useState("");
+  const [claimType, setClaimType]: any = useState("");
+  const setName = () =>{}
+  const setCity = () =>{}
+  const setStateCode = () =>{}
+  const setCountryCode = () =>{}
+  const setZip = () =>{}
 
-  const generateLink = () =>{
+  const generateLink = async () => {
     console.log("Generating Link!");
+
+    await axios.post('/api/print', {
+      shortName: linkName,
+      tokenAddress: nftAddress,
+      tokenID: nftID,
+      printType: claimType,
+      printCID,
+      productType: item,
+    });
+
+    const { data } = await axios.post(`/api/create-checkout-session?printCID=${printCID}`, { "itemType": item });
+    console.log("data: ", data);
+    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE);
+    console.log("done with loadStripe");
+    return await stripe.redirectToCheckout({ sessionId: data.id });
+  }
+
+  const claimNFT = () => {
+    alert("Congratulations, you have claimed your limited addition NFT!");
   }
 
   return (
@@ -20,7 +46,7 @@ export default function Preview({nftAsset, nftName, nftDescription, nftPrice}) {
 
       <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
         <label htmlFor="tokenName">Token Link Name:</label>
-        <input id="tokenName"style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => {setLinkName(e.target.value)}} placeholder="Name" />
+        <input id="tokenName" style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => {setLinkName(e.target.value)}} placeholder="Name" />
       </div>
 
       <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
@@ -32,7 +58,7 @@ export default function Preview({nftAsset, nftName, nftDescription, nftPrice}) {
           </select>
       </div>
 
-      <input style={{display: "block", margin: "20px auto", fontSize: "30px"}} onClick={() => {generateLink}} type="button" value="Mint & Print"/>
+      <input style={{display: "block", margin: "20px auto", fontSize: "30px"}} onClick={async () => {await generateLink()}} type="button" value="Confirm your MintPrint"/>
 
       <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "50px auto 0 auto", fontSize: "40px"}}>
         Browser Preview
@@ -52,6 +78,12 @@ export default function Preview({nftAsset, nftName, nftDescription, nftPrice}) {
           nftDescription={nftDescription}
           nftPrice={nftPrice}
           claimType={claimType}
+          action={claimNFT}
+          setName={setName}
+          setCity={setCity}
+          setStateCode={setStateCode}
+          setCountryCode={setCountryCode}
+          setZip={setZip}
         />
       </div>
     </div>

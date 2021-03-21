@@ -8,6 +8,7 @@ export default function Landing() {
     <div className={styles.container}>
       <Head>
         <title>Mintprint.io | Mint and Print!</title>
+  
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

@@ -7,13 +7,13 @@ export default async (req, res) => {
   const { userAddress, tokenAddress, tokenId, network } = req.query;
 
   const networks = {
-    mainnet: 'wss://main-light.eth.linkpool.io/ws',
-    matic: 'wss://ws-mainnet.matic.network',
-    mumbai: 'wss://ws-mumbai.matic.today',
-    rinkeby: 'wss://rinkeby-light.eth.linkpool.io/ws',
+    1: 'wss://main-light.eth.linkpool.io/ws',
+    4: 'wss://rinkeby-light.eth.linkpool.io/ws',
+    137: 'wss://ws-mainnet.matic.network',
+    80001: 'wss://ws-mumbai.matic.today',
   };
 
-  const web3 = new Web3(networks[network || 'mumbai']);
+  const web3 = new Web3(networks[network || 80001]);
 
   const tokenContract = new web3.eth.Contract(ERC721ABI, tokenAddress);
 
@@ -21,3 +21,4 @@ export default async (req, res) => {
 
   res.status(200).json({isOwner});
 }
+''
