@@ -21,7 +21,7 @@ export default async (req, res) => {
     });
   });
 
-  const contents = await fs.readFile(files.file.path, { encoding: 'utf8' });
+  const contents = await fs.readFile(files.file.path);
 
   const content = new Blob([contents]);
   const cid = await client.storeBlob(content);
