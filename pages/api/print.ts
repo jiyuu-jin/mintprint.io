@@ -7,10 +7,11 @@ export default async (req, res) => {
   let queryResponse = {rows: [{message: "Endpoint only supports get"}]};
 
   if (req.method === 'POST') {
-    queryResponse = await client.query(`INSERT INTO prints (shortName, tokenAddress, tokenID, printCID)
-    VALUES ($1, $2, $3, $4)`, [req.body.ShortName, req.body.tokenAddress, req.body.tokenID, req.body.printCID]);
+    queryResponse = await client.query(`INSERT INTO prints (shortName, tokenAddress, tokenID, printType, printCID, productType)
+    VALUES ($1, $2, $3, $4, $5, $6)`, [req.body.shortName, req.body.tokenAddress, req.body.tokenID, req.body.printType, req.body.printCID, req.body.productType]);
     await client.end();
-  }else{
+    res.status(200).json({});
+  } else {
     const { name } = req.query;
     queryResponse = await client.query(`SELECT * FROM prints WHERE shortName=$1`, [name]);
     await client.end();

@@ -2,18 +2,17 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Draggable from 'react-draggable';
+//import styles from "./progress.module.css";
 
-export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}: any) {
+export default function Print({ nftAsset, imageMockup, item, setImageMockup, setNFTAsset, setNFTAddress, setNFTID, setPrintCID, setItem}: any) {
   const [printView, setPrintView]: any = useState("template");
-  const [item, setItem]: any = useState("71");
   const [itemTemplates, setItemTemplates]: any = useState({});
   const [currentTemplate, setCurrentTemplate]: any = useState(0);
   const [itemPrintFiles, setItemPrintFiles]: any = useState({});
   const [itemScalingFactor, setItemScalingFactor]: any = useState(2);
-  const [itemMockupImage, setItemMockupImage]: any = useState();
   const [itemTemplate, setItemTemplate]: any = useState({
     image_url: "/loader.svg",
-    template_height: "", 
+    template_height: "",
     template_width: "",
     background_color: "",
     print_area_height: 0,
@@ -21,16 +20,8 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
     print_area_top: 0,
     print_area_width: 0,
   });
-  const [printScheme, setPrintScheme] = useState({
-    "area_width": 0,
-    "area_height": 0,
-    "width": 0,
-    "height": 0,
-    "top": 0,
-    "left": 0
-  });
+  const [progressBarRunning, setProgressBarRunning] = useState(false);
 
-  const checkHttps = (process.env.NEXT_PUBLIC_MODE == 'dev') ? 'http': 'https';
   const router = useRouter();
 
   const viewPreview = async () =>{
@@ -57,12 +48,13 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
       ]
     }
 
-    const mockupResp = await axios.post(
-      `${checkHttps}://${window.location.host}/api/mockup?item=${item}`,
-      printScheme
-    );
+    setProgressBarRunning(true);
+
+    const mockupResp = await axios.post(`/api/mockup?item=${item}`, printScheme);
     console.log(mockupResp.data.result);
-    setItemMockupImage(mockupResp.data.result.mockups[0].mockup_url);
+    const { data } = await axios.post(`/api/pin?fileURL=${mockupResp.data.result.mockups[0].mockup_url}`);
+    setImageMockup(`https://ipfs.io/ipfs/${data}`);
+    setPrintCID(data);
     setPrintView("mockup");
   }
 
@@ -78,15 +70,13 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
 
   const mockupView = {
     "template": itemTemplate.image_url,
-    "mockup": itemMockupImage,
+    "mockup": imageMockup,
     "loading": "/loader.svg"
   };
 
   useEffect(() =>{
     (async() =>{
-      const mockupResp = await axios.get(
-        `${checkHttps}://${window.location.host}/api/item?item=${item}`
-      );
+      const mockupResp = await axios.get(`/api/item?item=${item}`);
 
       console.log("Printful Response:", mockupResp.data);
 
@@ -107,7 +97,7 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
       )
     }else{
       return <input style={{display: "block", margin: "20px auto", fontSize: "30px"}} onClick={() => viewPreview()} type="button" value="Preview"/>
-    };      
+    };
   }
 
   return (
@@ -115,25 +105,31 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
       <h1 style={{padding: 30, fontWeight: 400, textAlign: "center", margin: "0 auto", fontSize: "60px"}}>Customize Your Print</h1>
         <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
           <label htmlFor="tokenAddress">Token Address:</label>
-          <input id="tokenAddress"style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setNFTAddress(e.target.value)} placeholder="Address" />
+          <input id="tokenAddress"style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setNFTAddress(e.target.value)} placeholder="0x333" />
         </div>
 
         <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
-          <label htmlFor="tokenAddress">Token ID:</label>
-          <input id="tokenAddress"style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setTokenID(e.target.value)} placeholder="Address" />
+          <label htmlFor="tokenId">Token ID:</label>
+          <input id="tokenId"style={{ marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setNFTID(e.target.value)} placeholder="Token ID" />
         </div>
 
+        {(printView == 'template') &&
+          <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
+            <label htmlFor="products">Choose an Item:</label>
+            <select style={{marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setItem(e.target.value)} name="items" id="items">
+              <option value="71">T-shirt</option>
+              <option value="1">Matte Paper Poster</option>
+              <option value="3">Canvas Print</option>
+              <option value="19">Mug</option>
+              <option value="186">Socks</option>
+              <option value="358">Stickers</option>
+              <option value="469">ECO-Friendly Bikini</option>
+            </select>
+          </div>
+        }
         <div style={{textAlign: "center", display: "block", margin: "20px auto", fontSize: "30px"}}>
-          <label htmlFor="products">Choose an Item:</label>
-          <select style={{marginLeft: "10px", fontSize: "30px"}} onChange={(e) => setItem(e.target.value)} name="items" id="items">
-            <option value="71">T-shirt</option>
-            <option value="1">Matte Paper Poster</option>
-            <option value="3">Canvas Print</option>
-            <option value="19">Mug</option>
-            <option value="186">Socks</option>
-            <option value="358">Stickers</option>
-            <option value="469">ECO-Friendly Bikini</option>
-          </select>
+          <label htmlFor="useTokenAsset">Use Token Asset:</label>
+          <input type="checkbox" id="useTokenAsset" style={{ marginLeft: "10px", fontSize: "30px", height: "30px", width: "30px"}} />
         </div>
 
         <input onChange={onImageChange} style={{padding: "20px 20px 20px 80px", display: "block", margin: "0 auto", fontSize: "30px"}} type="file" />
@@ -154,6 +150,9 @@ export default function Print({nftAsset, setNFTAsset, setNFTAddress, setTokenID}
                 </div>
             }
               <img style={{backgroundColor: itemTemplate.background_color, width: "100%"}}  src={mockupView[printView]}/>
+          </div>
+          <div style={{width: "500px", height: "30px", margin: "20px auto", backgroundColor: "#ddd"}}>
+            <div style={{backgroundColor: "#4CAF50", width: progressBarRunning ? "100%" : "0%", height: "100%", transitionProperty: "width", transitionDuration: "60s", transitionTimingFunction: "linear"}}/>
           </div>
         {renderButtons()}
     </div>
